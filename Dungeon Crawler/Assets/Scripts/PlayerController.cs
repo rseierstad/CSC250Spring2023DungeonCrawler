@@ -23,7 +23,23 @@ public class PlayerController : MonoBehaviour
         {
             this.rb.AddForce(this.northExit.transform.position * movementSpeed);
         }
+        if(Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            this.rb.AddForce(this.southExit.transform.position * movementSpeed);
+        }
         if(Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            this.rb.AddForce(this.westExit.transform.position * movementSpeed);
+        }
+        if(Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            this.rb.AddForce(this.eastExit.transform.position * movementSpeed);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.CompareTag("exit"))
         {
             MasterControlProgram.count++;
             SceneManager.LoadScene("Dungeon Room");
