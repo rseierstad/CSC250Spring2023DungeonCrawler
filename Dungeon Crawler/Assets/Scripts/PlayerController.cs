@@ -28,9 +28,9 @@ public class PlayerController : MonoBehaviour
                 movingTowards = "north";
             }
             if(Input.GetKeyDown(KeyCode.DownArrow))
-            {
+            { 
                 this.rb.AddForce(this.southExit.transform.position * movementSpeed);
-                    movingTowards = "south";
+                movingTowards = "south";
             }
             if(Input.GetKeyDown(KeyCode.RightArrow))
             {
