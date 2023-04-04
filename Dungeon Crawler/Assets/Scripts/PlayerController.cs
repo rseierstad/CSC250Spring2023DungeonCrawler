@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour
     public GameObject northExit, southExit, eastExit, westExit;
     public Vector3 northEntrancePosition, southEntrancePosition, eastEntrancePosition, westEntrancePosition;
     public Vector3 playerStartPosition;
+    public GameObject resetButton;
+    public Vector3 resetButtonPosition;
     public float movementSpeed = 40.0f;
     private bool isMoving;
     private bool reset;
@@ -26,11 +28,13 @@ public class PlayerController : MonoBehaviour
         this.eastEntrancePosition = new Vector3(this.eastExit.transform.position.x - 1.15f, 0.5f, this.eastExit.transform.position.z);
         this.westEntrancePosition = new Vector3(this.westExit.transform.position.x + 1.15f, 0.5f, this.westExit.transform.position.z);
 
+        this.resetButtonPosition = new Vector3(this.resetButton.transform.position.x, 0.5f, this.resetButton.transform.position.z);
+
         if(MasterControlProgram.whereDidIComeFrom.Equals("north"))
         {
             MasterControlProgram.whereDidIComeFrom = "?";
             this.rb.transform.position = this.southEntrancePosition;
-            this.rb.AddForce(new Vector3(0,0,40f));
+            this.rb.AddForce(this.northExit.transform.position * movementSpeed);
             this.isMoving = true;
             this.reset = false;
         }
@@ -38,7 +42,7 @@ public class PlayerController : MonoBehaviour
         {
             MasterControlProgram.whereDidIComeFrom = "?";
             this.rb.transform.position = this.northEntrancePosition;
-            this.rb.AddForce(new Vector3(0,0,-40f));
+            this.rb.AddForce(this.southExit.transform.position * movementSpeed);
             this.isMoving = true;
             this.reset = false;
         }
@@ -46,7 +50,7 @@ public class PlayerController : MonoBehaviour
         {
             MasterControlProgram.whereDidIComeFrom = "?";
             this.rb.transform.position = this.westEntrancePosition;
-            this.rb.AddForce(new Vector3(40f,0,0));
+            this.rb.AddForce(this.eastExit.transform.position * movementSpeed);
             this.isMoving = true;
             this.reset = false;
         }
@@ -54,23 +58,15 @@ public class PlayerController : MonoBehaviour
         {
             MasterControlProgram.whereDidIComeFrom = "?";
             this.rb.transform.position = this.eastEntrancePosition;
-            this.rb.AddForce(new Vector3(-40f,0,0));
+            this.rb.AddForce(this.westExit.transform.position * movementSpeed);
             this.isMoving = true;
             this.reset = false;
         }
-
-        //AddForce moves it weird
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(this.rb.transform.position == this.playerStartPosition)
-        {
-            this.rb.velocity = Vector3.zero;
-            this.rb.angularVelocity = Vector3.zero;
-        } //not working
-
         if(Input.GetKeyDown(KeyCode.UpArrow) && this.isMoving == false)
         {
             this.rb.AddForce(this.northExit.transform.position * movementSpeed);
@@ -90,6 +86,16 @@ public class PlayerController : MonoBehaviour
         {
             this.rb.AddForce(this.westExit.transform.position * movementSpeed);
             this.isMoving = true;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.CompareTag("reset"))
+        {
+            this.rb.velocity = Vector3.zero;
+            this.rb.angularVelocity = Vector3.zero;
+            this.isMoving = false;
         }
     }
 
