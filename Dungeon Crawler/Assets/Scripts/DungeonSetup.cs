@@ -5,13 +5,18 @@ using UnityEngine;
 public class DungeonSetup : MonoBehaviour
 {
     public GameObject northExit, southExit, eastExit, westExit;
-
-    public bool northOn, southOn, eastOn, westOn;
+    private Room currentRoom;
+    private bool northOn = false;
+    private bool southOn = false;
+    private bool eastOn = false;
+    private bool westOn = false;
 
     // Start is called before the first frame update
     void Start()
     {
         MasterControlProgram.setupDungeon();
+
+        this.setExits();
 
         this.northExit.SetActive(this.northOn);
         this.southExit.SetActive(this.southOn);
@@ -19,9 +24,24 @@ public class DungeonSetup : MonoBehaviour
         this.westExit.SetActive(this.westOn);
     }
 
-    // Update is called once per frame
-    void Update()
+    void setExits()
     {
-        
+        this.currentRoom = MasterControlProgram.p.getCurrentRoom();
+        if(this.currentRoom.hasExit("north"))
+        {
+            this.northOn = true;
+        }
+        if(this.currentRoom.hasExit("south"))
+        {
+            this.southOn = true;
+        }
+        if(this.currentRoom.hasExit("east"))
+        {
+            this.eastOn = true;
+        }
+        if(this.currentRoom.hasExit("west"))
+        {
+            this.westOn = true;
+        }
     }
 }

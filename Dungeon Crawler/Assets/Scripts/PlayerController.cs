@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     public GameObject westStart, eastStart, northStart, southStart;
     public float movementSpeed = 40.0f;
     private bool isMoving;
+    private Room currentRoom;
 
     // Start is called before the first frame update
     void Start()
@@ -40,27 +41,29 @@ public class PlayerController : MonoBehaviour
                 this.rb.AddForce(this.westExit.transform.position * movementSpeed);
             }
         }
+
+        this.currentRoom = MasterControlProgram.p.getCurrentRoom();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.UpArrow) && this.isMoving == false)
+        if(Input.GetKeyDown(KeyCode.UpArrow) && this.isMoving == false && northExit.activeSelf)
         {
             this.rb.AddForce(this.northExit.transform.position * movementSpeed);
             this.isMoving = true;
         }
-        if(Input.GetKeyDown(KeyCode.DownArrow) && this.isMoving == false)
+        if(Input.GetKeyDown(KeyCode.DownArrow) && this.isMoving == false && southExit.activeSelf)
         { 
             this.rb.AddForce(this.southExit.transform.position * movementSpeed);
             this.isMoving = true;
         }
-        if(Input.GetKeyDown(KeyCode.RightArrow) && this.isMoving == false)
+        if(Input.GetKeyDown(KeyCode.RightArrow) && this.isMoving == false && eastExit.activeSelf)
         {
             this.rb.AddForce(this.eastExit.transform.position * movementSpeed);
             this.isMoving = true;
         }
-        if(Input.GetKeyDown(KeyCode.LeftArrow) && this.isMoving == false)
+        if(Input.GetKeyDown(KeyCode.LeftArrow) && this.isMoving == false && westExit.activeSelf)
         {
             this.rb.AddForce(this.westExit.transform.position * movementSpeed);
             this.isMoving = true;
@@ -83,18 +86,22 @@ public class PlayerController : MonoBehaviour
             if(other.gameObject == this.northExit)
             {
                 MasterControlProgram.whereDidIComeFrom = "north";
+                this.currentRoom.takeExit(MasterControlProgram.p, "north");
             }
             else if(other.gameObject == this.southExit)
             {
                 MasterControlProgram.whereDidIComeFrom = "south";
+                this.currentRoom.takeExit(MasterControlProgram.p, "south");
             }
             else if(other.gameObject == this.eastExit)
             {
                 MasterControlProgram.whereDidIComeFrom = "east";
+                this.currentRoom.takeExit(MasterControlProgram.p, "east");
             }
             else if(other.gameObject == this.westExit)
             {
                 MasterControlProgram.whereDidIComeFrom = "west";
+                this.currentRoom.takeExit(MasterControlProgram.p, "west");
             }
             MasterControlProgram.isExiting = false;
             SceneManager.LoadScene("Dungeon Room");
