@@ -1,33 +1,28 @@
-public class Player : Inhabitant
+public class Player
 {
-    public Player()
+    private string name;
+    private Room currentRoom;
+    
+    public Player(string name)
     {
+        this.name = name;
     }
     
-    public void play()
+    public Room getCurrentRoom()
     {
-        string line;
-        while(true)
+        return this.currentRoom;
+    }
+    
+    public void setCurrentRoom(Room r)
+    {
+        if(r != null)
         {
-            this.getCurrentRoom().display();
-            System.out.print("What do you want to do? ");
-            line = input.nextLine();
-            
-            if(line.equalsIgnoreCase("quit"))
-            {
-                System.out.println("Goodbye!!");
-                break;
-            }
-            else if(line.equalsIgnoreCase("look"))
-            {
-                this.getCurrentRoom().display();
-            }
-            else
-            {
-                //you must have given me a direction
-                this.getCurrentRoom().takeExit(this, line);
-            }
+            this.currentRoom = r;
         }
     }
-    
+
+    public string getName()
+    {
+        return this.name;
+    }
 }
