@@ -15,6 +15,11 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        for(int i = 0; i < 10; i++)
+        {
+            print(Random.Range(1,10));
+        }
+
         this.rb = this.GetComponent<Rigidbody>();
         this.isMoving = false;
 
@@ -42,31 +47,43 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        this.currentRoom = MasterControlProgram.p.getCurrentRoom();
+        currentRoom = MasterControlProgram.p.getCurrentRoom();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.UpArrow) && this.isMoving == false && northExit.activeSelf)
+        if(Input.GetKeyDown(KeyCode.UpArrow) && this.isMoving == false)
         {
-            this.rb.AddForce(this.northExit.transform.position * movementSpeed);
-            this.isMoving = true;
+            if(currentRoom.hasExit("north"))
+            {
+                this.rb.AddForce(this.northExit.transform.position * movementSpeed);
+                this.isMoving = true;
+            }
         }
-        if(Input.GetKeyDown(KeyCode.DownArrow) && this.isMoving == false && southExit.activeSelf)
+        if(Input.GetKeyDown(KeyCode.DownArrow) && this.isMoving == false)
         { 
-            this.rb.AddForce(this.southExit.transform.position * movementSpeed);
-            this.isMoving = true;
+            if(currentRoom.hasExit("south"))
+            {
+                this.rb.AddForce(this.southExit.transform.position * movementSpeed);
+                this.isMoving = true;
+            }
         }
-        if(Input.GetKeyDown(KeyCode.RightArrow) && this.isMoving == false && eastExit.activeSelf)
+        if(Input.GetKeyDown(KeyCode.RightArrow) && this.isMoving == false)
         {
-            this.rb.AddForce(this.eastExit.transform.position * movementSpeed);
-            this.isMoving = true;
+            if(currentRoom.hasExit("east"))
+            {
+                this.rb.AddForce(this.eastExit.transform.position * movementSpeed);
+                this.isMoving = true;
+            }
         }
-        if(Input.GetKeyDown(KeyCode.LeftArrow) && this.isMoving == false && westExit.activeSelf)
+        if(Input.GetKeyDown(KeyCode.LeftArrow) && this.isMoving == false)
         {
-            this.rb.AddForce(this.westExit.transform.position * movementSpeed);
-            this.isMoving = true;
+            if(currentRoom.hasExit("west"))
+            {
+                this.rb.AddForce(this.westExit.transform.position * movementSpeed);
+                this.isMoving = true;
+            }
         }
     }
 
@@ -86,22 +103,22 @@ public class PlayerController : MonoBehaviour
             if(other.gameObject == this.northExit)
             {
                 MasterControlProgram.whereDidIComeFrom = "north";
-                this.currentRoom.takeExit(MasterControlProgram.p, "north");
+                currentRoom.takeExit(MasterControlProgram.p, "north");
             }
             else if(other.gameObject == this.southExit)
             {
                 MasterControlProgram.whereDidIComeFrom = "south";
-                this.currentRoom.takeExit(MasterControlProgram.p, "south");
+                currentRoom.takeExit(MasterControlProgram.p, "south");
             }
             else if(other.gameObject == this.eastExit)
             {
                 MasterControlProgram.whereDidIComeFrom = "east";
-                this.currentRoom.takeExit(MasterControlProgram.p, "east");
+                currentRoom.takeExit(MasterControlProgram.p, "east");
             }
             else if(other.gameObject == this.westExit)
             {
                 MasterControlProgram.whereDidIComeFrom = "west";
-                this.currentRoom.takeExit(MasterControlProgram.p, "west");
+                currentRoom.takeExit(MasterControlProgram.p, "west");
             }
             MasterControlProgram.isExiting = false;
             SceneManager.LoadScene("Dungeon Room");

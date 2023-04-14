@@ -6,10 +6,6 @@ public class DungeonSetup : MonoBehaviour
 {
     public GameObject northExit, southExit, eastExit, westExit;
     private Room currentRoom;
-    private bool northOn = false;
-    private bool southOn = false;
-    private bool eastOn = false;
-    private bool westOn = false;
 
     // Start is called before the first frame update
     void Start()
@@ -17,31 +13,26 @@ public class DungeonSetup : MonoBehaviour
         MasterControlProgram.setupDungeon();
 
         this.setExits();
-
-        this.northExit.SetActive(this.northOn);
-        this.southExit.SetActive(this.southOn);
-        this.eastExit.SetActive(this.eastOn);
-        this.westExit.SetActive(this.westOn);
     }
 
     void setExits()
     {
-        this.currentRoom = MasterControlProgram.p.getCurrentRoom();
-        if(this.currentRoom.hasExit("north"))
+        currentRoom = MasterControlProgram.p.getCurrentRoom();
+        if(!currentRoom.hasExit("north"))
         {
-            this.northOn = true;
+            this.northExit.SetActive(false);
         }
-        if(this.currentRoom.hasExit("south"))
+        if(!currentRoom.hasExit("south"))
         {
-            this.southOn = true;
+            this.southExit.SetActive(false);
         }
-        if(this.currentRoom.hasExit("east"))
+        if(!currentRoom.hasExit("east"))
         {
-            this.eastOn = true;
+            this.eastExit.SetActive(false);
         }
-        if(this.currentRoom.hasExit("west"))
+        if(!currentRoom.hasExit("west"))
         {
-            this.westOn = true;
+            this.westExit.SetActive(false);
         }
     }
 }
