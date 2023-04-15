@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,14 +12,13 @@ public class PlayerController : MonoBehaviour
     public float movementSpeed = 40.0f;
     private bool isMoving;
     private Room currentRoom;
+    private float fightRoller;
+    public TextMeshProUGUI stats;
 
     // Start is called before the first frame update
     void Start()
     {
-        for(int i = 0; i < 10; i++)
-        {
-            print(Random.Range(1,10));
-        }
+        this.fightRoller = Random.Range(1.0f,10.0f);
 
         this.rb = this.GetComponent<Rigidbody>();
         this.isMoving = false;
@@ -59,6 +59,7 @@ public class PlayerController : MonoBehaviour
             {
                 this.rb.AddForce(this.northExit.transform.position * movementSpeed);
                 this.isMoving = true;
+                loadFightScene();
             }
         }
         if(Input.GetKeyDown(KeyCode.DownArrow) && this.isMoving == false)
@@ -67,6 +68,7 @@ public class PlayerController : MonoBehaviour
             {
                 this.rb.AddForce(this.southExit.transform.position * movementSpeed);
                 this.isMoving = true;
+                loadFightScene();
             }
         }
         if(Input.GetKeyDown(KeyCode.RightArrow) && this.isMoving == false)
@@ -75,6 +77,7 @@ public class PlayerController : MonoBehaviour
             {
                 this.rb.AddForce(this.eastExit.transform.position * movementSpeed);
                 this.isMoving = true;
+                loadFightScene();
             }
         }
         if(Input.GetKeyDown(KeyCode.LeftArrow) && this.isMoving == false)
@@ -83,6 +86,7 @@ public class PlayerController : MonoBehaviour
             {
                 this.rb.AddForce(this.westExit.transform.position * movementSpeed);
                 this.isMoving = true;
+                loadFightScene();
             }
         }
     }
@@ -127,6 +131,14 @@ public class PlayerController : MonoBehaviour
         else if(other.gameObject.CompareTag("exit") && !MasterControlProgram.isExiting)
         {
             MasterControlProgram.isExiting = true;
+        }
+    }
+
+    private void loadFightScene()
+    {
+        if(this.fightRoller <= 3.0f)
+        {
+            SceneManager.LoadScene("Fight Scene");
         }
     }
 }
