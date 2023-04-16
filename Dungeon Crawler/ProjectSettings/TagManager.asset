@@ -6,6 +6,7 @@ TagManager:
   tags:
   - exit
   - reset
+  - fight square
   layers:
   - Default
   - TransparentFX

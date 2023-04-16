@@ -9,11 +9,10 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     public GameObject northExit, southExit, eastExit, westExit;
     public GameObject westStart, eastStart, northStart, southStart;
-    public float movementSpeed = 40.0f;
+    public GameObject resetButton;
     private bool isMoving;
     private Room currentRoom;
     private float fightRoller;
-    public TextMeshProUGUI stats;
 
     // Start is called before the first frame update
     void Start()
@@ -28,22 +27,22 @@ public class PlayerController : MonoBehaviour
             if(MasterControlProgram.whereDidIComeFrom.Equals("north"))
             {
                 this.gameObject.transform.position = this.southStart.transform.position;
-                this.rb.AddForce(this.northExit.transform.position * movementSpeed);
+                this.rb.AddForce(Vector3.forward * 200.0f);
             }
             else if(MasterControlProgram.whereDidIComeFrom.Equals("south"))
             {
                 this.gameObject.transform.position = this.northStart.transform.position;
-                this.rb.AddForce(this.southExit.transform.position * movementSpeed);
+                this.rb.AddForce(Vector3.back * 200.0f);
             }
             else if(MasterControlProgram.whereDidIComeFrom.Equals("east"))
             {
                 this.gameObject.transform.position = this.westStart.transform.position;
-                this.rb.AddForce(this.eastExit.transform.position * movementSpeed);
+                this.rb.AddForce(Vector3.right * 200.0f);
             }
             else if(MasterControlProgram.whereDidIComeFrom.Equals("west"))
             {
                 this.gameObject.transform.position = this.eastStart.transform.position;
-                this.rb.AddForce(this.westExit.transform.position * movementSpeed);
+                this.rb.AddForce(Vector3.left * 200.0f);
             }
         }
 
@@ -57,36 +56,32 @@ public class PlayerController : MonoBehaviour
         {
             if(currentRoom.hasExit("north"))
             {
-                this.rb.AddForce(this.northExit.transform.position * movementSpeed);
+                this.rb.AddForce(Vector3.forward * 200.0f);
                 this.isMoving = true;
-                loadFightScene();
             }
         }
         if(Input.GetKeyDown(KeyCode.DownArrow) && this.isMoving == false)
         { 
             if(currentRoom.hasExit("south"))
             {
-                this.rb.AddForce(this.southExit.transform.position * movementSpeed);
+                this.rb.AddForce(Vector3.back * 200.0f);
                 this.isMoving = true;
-                loadFightScene();
             }
         }
         if(Input.GetKeyDown(KeyCode.RightArrow) && this.isMoving == false)
         {
             if(currentRoom.hasExit("east"))
             {
-                this.rb.AddForce(this.eastExit.transform.position * movementSpeed);
+                this.rb.AddForce(Vector3.right * 200.0f);
                 this.isMoving = true;
-                loadFightScene();
             }
         }
         if(Input.GetKeyDown(KeyCode.LeftArrow) && this.isMoving == false)
         {
             if(currentRoom.hasExit("west"))
             {
-                this.rb.AddForce(this.westExit.transform.position * movementSpeed);
+                this.rb.AddForce(Vector3.left * 200.0f);
                 this.isMoving = true;
-                loadFightScene();
             }
         }
     }
@@ -132,11 +127,8 @@ public class PlayerController : MonoBehaviour
         {
             MasterControlProgram.isExiting = true;
         }
-    }
 
-    private void loadFightScene()
-    {
-        if(this.fightRoller <= 3.0f)
+        else if(other.gameObject.CompareTag("fight square") && this.fightRoller <= 3.0f)
         {
             SceneManager.LoadScene("Fight Scene");
         }
