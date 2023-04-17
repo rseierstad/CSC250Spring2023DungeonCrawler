@@ -12,13 +12,10 @@ public class PlayerController : MonoBehaviour
     public GameObject resetButton;
     private bool isMoving;
     private Room currentRoom;
-    private float fightRoller;
 
     // Start is called before the first frame update
     void Start()
     {
-        this.fightRoller = Random.Range(1.0f,10.0f);
-
         this.rb = this.GetComponent<Rigidbody>();
         this.isMoving = false;
 
@@ -126,11 +123,6 @@ public class PlayerController : MonoBehaviour
         else if(other.gameObject.CompareTag("exit") && !MasterControlProgram.isExiting)
         {
             MasterControlProgram.isExiting = true;
-        }
-
-        else if(other.gameObject.CompareTag("fight square") && this.fightRoller <= 3.0f)
-        {
-            SceneManager.LoadScene("Fight Scene");
         }
     }
 }
