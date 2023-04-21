@@ -8,9 +8,6 @@ public class MasterControlProgram
     private static bool isDungeonSetup = false;
     public static Dungeon cs = null;
     public static Player p = null;
-    public static int playerHP = Random.Range(10,21);
-    public static int playerAC = Random.Range(10,18);
-    public static int playerDamage = Random.Range(1,6);
 
     public static void setupDungeon()
     {
