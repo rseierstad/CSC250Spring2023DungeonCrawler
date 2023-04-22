@@ -19,9 +19,4 @@ public class Player : Inhabitant
             this.currentRoom = r;
         }
     }
-
-    public string getName()
-    {
-        return this.name;
-    }
 }

@@ -22,4 +22,24 @@ public class Inhabitant
         s = s + " - " + this.hp + " / " + this.ac + " / " + this.damage;
         return s;
     }
+
+    public int getHP()
+    {
+        return this.hp;
+    }
+
+    public int getAC()
+    {
+        return this.ac;
+    }
+
+    public int getDamage()
+    {
+        return this.damage;
+    }
+
+    public string getName()
+    {
+        return name;
+    }
 }

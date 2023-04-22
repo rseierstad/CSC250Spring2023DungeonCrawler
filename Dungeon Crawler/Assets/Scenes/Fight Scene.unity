@@ -493,7 +493,6 @@ GameObject:
   - component: {fileID: 242667642}
   - component: {fileID: 242667641}
   - component: {fileID: 242667640}
-  - component: {fileID: 242667644}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -579,39 +578,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &242667644
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 242667639}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 403349db9242cda43a3660355858ba92, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  monster1HP: 0
-  monster2HP: 0
-  monster3HP: 0
-  monster1AC: 0
-  monster2AC: 0
-  monster3AC: 0
-  monster1Damage: 0
-  monster2Damage: 0
-  monster3Damage: 0
-  monster1Text: {fileID: 0}
-  monster2Text: {fileID: 0}
-  monster3Text: {fileID: 0}
-  monster1HPACText: {fileID: 0}
-  monster2HPACText: {fileID: 0}
-  monster3HPACText: {fileID: 0}
-  monster1DamageText: {fileID: 0}
-  monster2DamageText: {fileID: 0}
-  monster3DamageText: {fileID: 0}
-  playerText: {fileID: 0}
-  playerHPACText: {fileID: 0}
-  playerDamageText: {fileID: 0}
 --- !u!1001 &375489058
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1797,7 +1763,6 @@ GameObject:
   - component: {fileID: 1283313200}
   - component: {fileID: 1283313199}
   - component: {fileID: 1283313198}
-  - component: {fileID: 1283313203}
   m_Layer: 0
   m_Name: Monster
   m_TagString: Untagged
@@ -1884,18 +1849,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1283313203
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1283313197}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81d64431d101e9249bfb87e1f860ed66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1305520308
 PrefabInstance:
   m_ObjectHideFlags: 0
