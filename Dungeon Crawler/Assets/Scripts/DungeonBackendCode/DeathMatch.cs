@@ -1,5 +1,5 @@
 using System;
-using System.Threading;
+using System.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,25 +11,30 @@ public class DeathMatch
     private GameObject combatant1GO;
     private GameObject combatant2GO;
     private int roll;
-    private int com1hp, com2hp;
     private int com1ac, com2ac;
     private int com1damage, com2damage;
+    private Vector3 attackPosition1, attackPosition2;
+    private Vector3 combatant1StartPosition, combatant2StartPosition;
+    public string turnText;
 
-    public DeathMatch(Inhabitant combatant1, Inhabitant combatant2, GameObject combatant1GO, GameObject combatant2GO)
+    public DeathMatch(Inhabitant combatant1, Inhabitant combatant2, GameObject combatant1GO, GameObject combatant2GO, GameObject attackPosition1, GameObject attackPosition2)
     {
         this.combatant1 = combatant1;
         this.combatant2 = combatant2;
         this.combatant1GO = combatant1GO;
         this.combatant2GO = combatant2GO;
-        this.com1hp = this.combatant1.getHP();
         this.com1ac = this.combatant1.getAC();
         this.com1damage = this.combatant1.getDamage();
-        this.com2hp = this.combatant2.getHP();
         this.com2ac = this.combatant2.getAC();
         this.com2damage = this.combatant2.getDamage();
+        this.attackPosition1 = attackPosition1.transform.position;
+        this.attackPosition2 = attackPosition2.transform.position;
+        this.combatant1StartPosition = this.combatant1GO.transform.position;
+        this.combatant2StartPosition = this.combatant2GO.transform.position;
+        this.turnText = "Fight!";
     }
 
-    public void fight()
+    public async Task fight()
     {
         //goes back and forth having our Inhabitants "try" to attack each other
         //a successful attack means that a D20 is at least as high as the target's AC
@@ -38,62 +43,54 @@ public class DeathMatch
         //go back and forth like this until an Inhabitant dies
         
         System.Random r = new System.Random();
-
-        if(this.com1hp > 0 && this.com2hp > 0)
+        
+        while(true)
         {
-            this.roll = 20;
-            if(this.roll >= this.com2ac)
+            if(this.combatant1.hp > 0 && this.combatant2.hp > 0)
             {
-                this.com2hp = this.com2hp - this.com1damage;
-            }
-
-            if(this.com1hp > 0 && this.com2hp > 0)
-            {
-                this.roll = 20;
-                if(this.roll >= this.com1ac)
+                this.turnText = this.combatant1.getName() + "'s Turn";
+                await Task.Delay(2000);
+                this.roll = r.Next(1, 21);
+                if(this.roll >= this.com2ac)
                 {
-                    this.com1hp = this.com1hp - this.com2damage;
+                    this.turnText = "Hit!";
+                    await Task.Delay(2000);
+                    this.combatant2.hp = this.combatant2.hp - this.com1damage;
+                }
+                else if(this.roll < this.com2ac)
+                {
+                    this.turnText = "Miss!";
+                    await Task.Delay(2000);
+                }
+
+                if(this.combatant1.hp > 0 && this.combatant2.hp > 0)
+                {
+                    this.turnText = this.combatant2.getName() + "'s Turn";
+                    await Task.Delay(2000);
+                    this.roll = r.Next(1, 21);
+                    if(this.roll >= this.com1ac)
+                    {
+                        this.turnText = "Hit!";
+                        await Task.Delay(2000);
+                        this.combatant1.hp = this.combatant1.hp - this.com2damage;
+                    }
+                    else if(this.roll < this.com1ac)
+                    {
+                        this.turnText = "Miss!";
+                        await Task.Delay(2000);
+                    }
                 }
             }
+            if(this.combatant1.hp <= 0)
+            {
+                this.turnText = this.combatant2.getName() + " has won!";
+                break;
+            }
+            if(this.combatant2.hp <= 0)
+            {
+                this.turnText = this.combatant1.getName() + " has won!";
+                break;
+            }
         }
-        /*if(this.com1hp > 0 && this.com2hp <= 0)
-        {
-            return this.combatant1.getName();
-            break;
-        }
-        if(this.com2hp > 0 && this.com1hp <= 0)
-        {
-            return this.combatant2.getName();
-            break;
-        }*/
     }
-
-    /*public void attack(Inhabitant attacker)
-    {
-        System.Random r = new System.Random();
-        if(attacker.getName().Equals(this.combatant1.getName()))
-        {
-            this.combatant1GO.transform.position = new Vector3(2f, 0.5f, 0);
-            Thread.Sleep(1000);
-            this.roll = r.Next(1, 21);
-            if(this.roll >= this.com2ac)
-            {
-                this.com2hp = this.com2hp - this.com1damage;
-            }
-            this.combatant1GO.transform.position = new Vector3(2.5f, 0.5f, 0);
-            Thread.Sleep(1000);
-        }
-        if(attacker.getName().Equals(this.combatant2.getName()))
-        {
-            this.combatant2GO.transform.position = new Vector3(-2f, 0.5f, 0);
-            Thread.Sleep(1000);
-            this.roll = r.Next(1, 21);
-            if(this.roll >= this.com1ac)
-            {
-                this.com1hp = this.com1hp - this.com2damage;
-            }
-            this.combatant2GO.transform.position = new Vector3(-2.5f, 0.5f, 0);
-            Thread.Sleep(1000);
-        }
-    }*/
 }

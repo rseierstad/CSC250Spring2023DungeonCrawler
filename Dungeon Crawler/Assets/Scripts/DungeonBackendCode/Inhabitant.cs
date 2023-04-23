@@ -2,7 +2,7 @@ using System;
 
 public class Inhabitant
 {
-    protected int hp;
+    public int hp;
     protected int ac;
     protected int damage;
     protected string name;
@@ -23,11 +23,6 @@ public class Inhabitant
         return s;
     }
 
-    public int getHP()
-    {
-        return this.hp;
-    }
-
     public int getAC()
     {
         return this.ac;
@@ -40,6 +35,6 @@ public class Inhabitant
 
     public string getName()
     {
-        return name;
+        return this.name;
     }
 }
