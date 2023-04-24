@@ -16,8 +16,14 @@ public class DeathMatch
     private Vector3 attackPosition1, attackPosition2;
     private Vector3 combatant1StartPosition, combatant2StartPosition;
     public string turnText;
+    private Rigidbody currRigidBodyOfAttacker;
+    private Vector3 attackerOriginalPosition;
+    private float attackMoveDistance = 2.5f;
+    private Inhabitant currentAttacker;
+    private GameObject currentAttackerGO;
+    private MonoBehavior refereeInstance;
 
-    public DeathMatch(Inhabitant combatant1, Inhabitant combatant2, GameObject combatant1GO, GameObject combatant2GO, GameObject attackPosition1, GameObject attackPosition2)
+    public DeathMatch(Inhabitant combatant1, Inhabitant combatant2, GameObject combatant1GO, GameObject combatant2GO, MonoBehavior refereeInstance)
     {
         this.combatant1 = combatant1;
         this.combatant2 = combatant2;
@@ -27,14 +33,27 @@ public class DeathMatch
         this.com1damage = this.combatant1.getDamage();
         this.com2ac = this.combatant2.getAC();
         this.com2damage = this.combatant2.getDamage();
-        this.attackPosition1 = attackPosition1.transform.position;
-        this.attackPosition2 = attackPosition2.transform.position;
-        this.combatant1StartPosition = this.combatant1GO.transform.position;
-        this.combatant2StartPosition = this.combatant2GO.transform.position;
         this.turnText = "Fight!";
+        this.currentAttacker = this.combatant1;
+        this.currentAttackerGO = this.combatant1GO;
+        this.refereeInstance = refereeInstance;
     }
 
-    public async Task fight()
+    //this is basically a thread
+    public IEnumerator MoveObjectRoutine()
+    {
+        yield return new WaitForSeconds(2.0f);
+        Vector3 originalPosition = this.attackerOriginalPosition;
+        Vector3 targetPosition = originalPosition + this.currentAttackerGO.transform.right * attackMoveDistance;
+
+        this.currRigidBodyOfAttacker.MovePosition(targetPosition);
+
+        yield return new WaitForSeconds(2.0f);
+
+        this.currRigidBodyOfAttacker.MovePosition(originalPosition);
+    }
+
+    public void fight()
     {
         //goes back and forth having our Inhabitants "try" to attack each other
         //a successful attack means that a D20 is at least as high as the target's AC
@@ -46,38 +65,46 @@ public class DeathMatch
         
         while(true)
         {
+            this.attackerOriginalPosition = this.currentAttackerGO.transform.position;
+            this.currRigidBodyOfAttacker = this.currentAttackerGO.GetComponent<Rigidbody>();
+            this.attackerMoveDistance *= -1;
+
+            if(this.currentAttackerGO == this.combatant1GO)
+            {
+                this.currentAttackerGO == this.combatant2GO;
+            }
+            else if(this.currentAttackerGO == this.combatant2GO)
+            {
+                this.currentAttackerGO == this.combatant1GO;
+            }
+            this.refereeInstance.StartCoroutine(MoveObjectRoutine());
+
             if(this.combatant1.hp > 0 && this.combatant2.hp > 0)
             {
                 this.turnText = this.combatant1.getName() + "'s Turn";
-                await Task.Delay(2000);
                 this.roll = r.Next(1, 21);
                 if(this.roll >= this.com2ac)
                 {
                     this.turnText = "Hit!";
-                    await Task.Delay(2000);
                     this.combatant2.hp = this.combatant2.hp - this.com1damage;
                 }
                 else if(this.roll < this.com2ac)
                 {
                     this.turnText = "Miss!";
-                    await Task.Delay(2000);
                 }
 
                 if(this.combatant1.hp > 0 && this.combatant2.hp > 0)
                 {
                     this.turnText = this.combatant2.getName() + "'s Turn";
-                    await Task.Delay(2000);
                     this.roll = r.Next(1, 21);
                     if(this.roll >= this.com1ac)
                     {
                         this.turnText = "Hit!";
-                        await Task.Delay(2000);
                         this.combatant1.hp = this.combatant1.hp - this.com2damage;
                     }
                     else if(this.roll < this.com1ac)
                     {
                         this.turnText = "Miss!";
-                        await Task.Delay(2000);
                     }
                 }
             }

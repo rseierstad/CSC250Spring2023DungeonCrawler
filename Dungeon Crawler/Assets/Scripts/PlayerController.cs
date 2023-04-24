@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     public GameObject resetButton;
     private bool isMoving;
     private Room currentRoom;
+    public GameObject playerCostume;
 
     // Start is called before the first frame update
     void Start()
@@ -24,21 +25,26 @@ public class PlayerController : MonoBehaviour
             if(MasterControlProgram.whereDidIComeFrom.Equals("north"))
             {
                 this.gameObject.transform.position = this.southStart.transform.position;
+                this.playerCostume.transform.LookAt(this.northExit.transform);
                 this.rb.AddForce(Vector3.forward * 200.0f);
+                
             }
             else if(MasterControlProgram.whereDidIComeFrom.Equals("south"))
             {
                 this.gameObject.transform.position = this.northStart.transform.position;
+                this.playerCostume.transform.LookAt(this.southExit.transform);
                 this.rb.AddForce(Vector3.back * 200.0f);
             }
             else if(MasterControlProgram.whereDidIComeFrom.Equals("east"))
             {
                 this.gameObject.transform.position = this.westStart.transform.position;
+                this.playerCostume.transform.LookAt(this.eastExit.transform);
                 this.rb.AddForce(Vector3.right * 200.0f);
             }
             else if(MasterControlProgram.whereDidIComeFrom.Equals("west"))
             {
                 this.gameObject.transform.position = this.eastStart.transform.position;
+                this.playerCostume.transform.LookAt(this.westExit.transform);
                 this.rb.AddForce(Vector3.left * 200.0f);
             }
         }
@@ -53,6 +59,7 @@ public class PlayerController : MonoBehaviour
         {
             if(currentRoom.hasExit("north"))
             {
+                this.playerCostume.transform.LookAt(this.northExit.transform);    
                 this.rb.AddForce(Vector3.forward * 200.0f);
                 this.isMoving = true;
             }
@@ -61,6 +68,7 @@ public class PlayerController : MonoBehaviour
         { 
             if(currentRoom.hasExit("south"))
             {
+                this.playerCostume.transform.LookAt(this.southExit.transform);
                 this.rb.AddForce(Vector3.back * 200.0f);
                 this.isMoving = true;
             }
@@ -69,6 +77,7 @@ public class PlayerController : MonoBehaviour
         {
             if(currentRoom.hasExit("east"))
             {
+                this.playerCostume.transform.LookAt(this.eastExit.transform);
                 this.rb.AddForce(Vector3.right * 200.0f);
                 this.isMoving = true;
             }
@@ -77,6 +86,7 @@ public class PlayerController : MonoBehaviour
         {
             if(currentRoom.hasExit("west"))
             {
+                this.playerCostume.transform.LookAt(this.westExit.transform);
                 this.rb.AddForce(Vector3.left * 200.0f);
                 this.isMoving = true;
             }

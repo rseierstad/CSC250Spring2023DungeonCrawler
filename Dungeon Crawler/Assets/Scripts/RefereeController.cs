@@ -11,10 +11,8 @@ public class RefereeController : MonoBehaviour
     public TextMeshPro playerSB;
     private Monster theMonster;
     private DeathMatch theMatch;
-    private bool activeFight;
-    public GameObject attackPosition1;
-    public GameObject attackPosition2;
     public TextMeshPro turnText;
+    private Rigidbody currRigidBodyOfAttacker;
 
     // Start is called before the first frame update
     void Start()
@@ -23,8 +21,15 @@ public class RefereeController : MonoBehaviour
         this.monsterSB.text = this.theMonster.getData();
         this.playerSB.text = MasterControlProgram.p.getData();
         this.turnText.text = "Fight!";
-        this.theMatch = new DeathMatch(MasterControlProgram.p, this.theMonster, this.playerGO, this.monsterGO, this.attackPosition1, this.attackPosition2);
-        this.activeFight = false;
+        this.theMatch = new DeathMatch(MasterControlProgram.p, this.theMonster, this.playerGO, this.monsterGO, this);
+        MasterControlProgram.playerShouldAttack = true;
+        StartCoroutine(DelayBeforeFight());
+    }
+
+    IEnumerator DelayBeforeFight()
+    {
+        yield return new WaitForSeconds(0.5f);
+        this.theMatch.fight();
     }
 
     // Update is called once per frame
@@ -34,10 +39,25 @@ public class RefereeController : MonoBehaviour
         this.playerSB.text = MasterControlProgram.p.getData();
         this.turnText.text = this.theMatch.turnText;
 
-        if(Input.GetKeyDown(KeyCode.UpArrow) && this.activeFight == false)
+        if(MasterControlProgram.playerShouldAttack)
         {
-            this.theMatch.fight();
-            this.activeFight = true;
+            MasterControlProgram.playerShouldAttack = false;
+            this.currRigidBodyOfAttacker = this.playerGO.GetComponent<Rigidbody>();
+            this.attackerMoveDistance *= -1;
+            this.attackerOriginalPosition = this.playerGO.tranform.position;
+
+            //this tells our thread to start
+            StartCoroutine(this.theMatch.MoveObjectRoutine());
+        }
+
+        if(MasterControlProgram.monsterShouldAttack)
+        {
+            MasterControlProgram.monsterShouldAttack = false;
+            this.currRigidBodyOfAttacker = this.monsterGO.GetComponent<Rigidbody>();
+            this.attackerOriginalPosition = this.monsterGO.tranform.position;
+
+            //this tells our thread to start
+            StartCoroutine(this.theMatch.MoveObjectRoutine());
         }
     }
 }
