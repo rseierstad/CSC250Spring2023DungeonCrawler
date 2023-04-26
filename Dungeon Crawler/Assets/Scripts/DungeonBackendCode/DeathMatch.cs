@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,11 +8,10 @@ public class DeathMatch
     private Inhabitant combatant2;
     private GameObject combatant1GO;
     private GameObject combatant2GO;
-    private Vector3 attackPosition1, attackPosition2;
-    public string turnText;
+    public string turnText = "Fight!";
     private Rigidbody currRigidBodyOfAttacker;
     private Vector3 attackerOriginalPosition;
-    private float attackMoveDistance = 2.5f;
+    private float attackMoveDistance = -1.5f;
     private Inhabitant currentAttacker;
     private GameObject currentAttackerGO;
     private Inhabitant currentTarget;
@@ -27,7 +24,6 @@ public class DeathMatch
         this.combatant2 = combatant2;
         this.combatant1GO = combatant1GO;
         this.combatant2GO = combatant2GO;
-        this.turnText = "Fight!";
         this.currentAttacker = this.combatant1;
         this.currentAttackerGO = this.combatant1GO;
         this.currentTarget = this.combatant2;
@@ -36,11 +32,15 @@ public class DeathMatch
     }
 
     //this is basically a thread
-    public IEnumerator MoveObjectRoutine()
+    IEnumerator MoveObjectRoutine()
     {
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(1.0f);
         Vector3 originalPosition = this.attackerOriginalPosition;
-        Vector3 targetPosition = originalPosition + this.currentAttackerGO.transform.right * attackMoveDistance;
+        Vector3 targetPosition = originalPosition + this.currentAttackerGO.transform.forward * attackMoveDistance;
+
+        this.turnText = this.currentAttacker.getName() + "'s Turn";
+
+        ((RefereeController)this.refereeInstance).updateScore();
 
         this.currRigidBodyOfAttacker.MovePosition(targetPosition);
 
@@ -52,9 +52,14 @@ public class DeathMatch
         if(Dice.roll(20) >= this.currentTarget.getAC())
         {
             this.currentTarget.takeDamage(this.currentAttacker.getDamage());
+            this.turnText = "Hit!";
+        }
+        else
+        {
+            this.turnText = "Miss!";
         }
         
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(1.0f);
 
         ((RefereeController)this.refereeInstance).updateScore();
 
@@ -80,7 +85,6 @@ public class DeathMatch
         //{
             this.attackerOriginalPosition = this.currentAttackerGO.transform.position;
             this.currRigidBodyOfAttacker = this.currentAttackerGO.GetComponent<Rigidbody>();
-            this.attackMoveDistance *= -1;
 
             if(this.currentAttackerGO == this.combatant1GO)
             {
@@ -89,7 +93,7 @@ public class DeathMatch
                 this.currentTarget = this.combatant1;
                 this.currentTargetGO = this.combatant1GO;
             }
-            else if(this.currentAttackerGO == this.combatant2GO)
+            else
             {
                 this.currentAttackerGO = this.combatant1GO;
                 this.currentAttacker = this.combatant1;
@@ -140,5 +144,10 @@ public class DeathMatch
                 //break;
             }*/
         //}
+    }
+
+    public string getTurnText()
+    {
+        return this.turnText;
     }
 }

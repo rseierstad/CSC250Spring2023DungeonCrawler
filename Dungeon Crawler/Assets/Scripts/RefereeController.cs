@@ -12,15 +12,14 @@ public class RefereeController : MonoBehaviour
     private Monster theMonster;
     private DeathMatch theMatch;
     public TextMeshPro turnText;
-    private Rigidbody currRigidBodyOfAttacker;
 
     // Start is called before the first frame update
     void Start()
     {
         this.theMonster = new Monster("Wizard");
         this.turnText.text = "Fight!";
-        this.updateScore();  
         this.theMatch = new DeathMatch(MasterControlProgram.p, this.theMonster, this.playerGO, this.monsterGO, this);
+        this.updateScore();
         StartCoroutine(DelayBeforeFight());
     }
 
@@ -28,12 +27,12 @@ public class RefereeController : MonoBehaviour
     {
         this.monsterSB.text = this.theMonster.getData();
         this.playerSB.text = MasterControlProgram.p.getData();
-        this.turnText.text = this.theMatch.turnText;
+        this.turnText.text = this.theMatch.getTurnText();
     }
 
     IEnumerator DelayBeforeFight()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1.0f);
         this.theMatch.fight();
     }
 
