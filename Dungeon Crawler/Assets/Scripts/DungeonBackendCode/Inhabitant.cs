@@ -2,7 +2,7 @@ using System;
 
 public class Inhabitant
 {
-    public int hp;
+    protected int hp;
     protected int ac;
     protected int damage;
     protected string name;
@@ -36,5 +36,15 @@ public class Inhabitant
     public string getName()
     {
         return this.name;
+    }
+
+    public void takeDamage(int damage)
+    {
+        this.hp = this.hp - damage;
+    }
+
+    public bool isDead()
+    {
+        return this.hp <= 0;
     }
 }

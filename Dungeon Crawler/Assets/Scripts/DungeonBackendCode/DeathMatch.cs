@@ -10,32 +10,28 @@ public class DeathMatch
     private Inhabitant combatant2;
     private GameObject combatant1GO;
     private GameObject combatant2GO;
-    private int roll;
-    private int com1ac, com2ac;
-    private int com1damage, com2damage;
     private Vector3 attackPosition1, attackPosition2;
-    private Vector3 combatant1StartPosition, combatant2StartPosition;
     public string turnText;
     private Rigidbody currRigidBodyOfAttacker;
     private Vector3 attackerOriginalPosition;
     private float attackMoveDistance = 2.5f;
     private Inhabitant currentAttacker;
     private GameObject currentAttackerGO;
-    private MonoBehavior refereeInstance;
+    private Inhabitant currentTarget;
+    private GameObject currentTargetGO;
+    private MonoBehaviour refereeInstance;
 
-    public DeathMatch(Inhabitant combatant1, Inhabitant combatant2, GameObject combatant1GO, GameObject combatant2GO, MonoBehavior refereeInstance)
+    public DeathMatch(Inhabitant combatant1, Inhabitant combatant2, GameObject combatant1GO, GameObject combatant2GO, MonoBehaviour refereeInstance)
     {
         this.combatant1 = combatant1;
         this.combatant2 = combatant2;
         this.combatant1GO = combatant1GO;
         this.combatant2GO = combatant2GO;
-        this.com1ac = this.combatant1.getAC();
-        this.com1damage = this.combatant1.getDamage();
-        this.com2ac = this.combatant2.getAC();
-        this.com2damage = this.combatant2.getDamage();
         this.turnText = "Fight!";
         this.currentAttacker = this.combatant1;
         this.currentAttackerGO = this.combatant1GO;
+        this.currentTarget = this.combatant2;
+        this.currentTargetGO = this.combatant2GO;
         this.refereeInstance = refereeInstance;
     }
 
@@ -51,35 +47,60 @@ public class DeathMatch
         yield return new WaitForSeconds(2.0f);
 
         this.currRigidBodyOfAttacker.MovePosition(originalPosition);
+
+        //try to hit target here
+        if(Dice.roll(20) >= this.currentTarget.getAC())
+        {
+            this.currentTarget.takeDamage(this.currentAttacker.getDamage());
+        }
+        
+        yield return new WaitForSeconds(2.0f);
+
+        ((RefereeController)this.refereeInstance).updateScore();
+
+        if(this.currentTarget.isDead())
+        {
+            //what happens when our fight is over?
+            //1. Make the dead guy fall over (rotate)
+            //2. Make the winner jump up and down (apply a force to a rigidbody)
+            //3. Play Victory Music
+        }
+        else
+        {
+            //call the fight method again after this guy is done moving
+            this.fight();
+        }
     }
 
     public void fight()
-    {
-        //goes back and forth having our Inhabitants "try" to attack each other
-        //a successful attack means that a D20 is at least as high as the target's AC
-        //upon successful attack, the target's HP will reduce by the attacker's damage
-        //an unsuccessful attack results in no change in HP
-        //go back and forth like this until an Inhabitant dies
+    {   
+        //System.Random r = new System.Random();
         
-        System.Random r = new System.Random();
-        
-        while(true)
-        {
+        //while(true)
+        //{
             this.attackerOriginalPosition = this.currentAttackerGO.transform.position;
             this.currRigidBodyOfAttacker = this.currentAttackerGO.GetComponent<Rigidbody>();
-            this.attackerMoveDistance *= -1;
+            this.attackMoveDistance *= -1;
 
             if(this.currentAttackerGO == this.combatant1GO)
             {
-                this.currentAttackerGO == this.combatant2GO;
+                this.currentAttackerGO = this.combatant2GO;
+                this.currentAttacker = this.combatant2;
+                this.currentTarget = this.combatant1;
+                this.currentTargetGO = this.combatant1GO;
             }
             else if(this.currentAttackerGO == this.combatant2GO)
             {
-                this.currentAttackerGO == this.combatant1GO;
+                this.currentAttackerGO = this.combatant1GO;
+                this.currentAttacker = this.combatant1;
+                this.currentTarget = this.combatant2;
+                this.currentTargetGO = this.combatant2GO;
             }
+
+            //non-blocking line of code
             this.refereeInstance.StartCoroutine(MoveObjectRoutine());
 
-            if(this.combatant1.hp > 0 && this.combatant2.hp > 0)
+            /*if(this.combatant1.hp > 0 && this.combatant2.hp > 0)
             {
                 this.turnText = this.combatant1.getName() + "'s Turn";
                 this.roll = r.Next(1, 21);
@@ -111,13 +132,13 @@ public class DeathMatch
             if(this.combatant1.hp <= 0)
             {
                 this.turnText = this.combatant2.getName() + " has won!";
-                break;
+                //break;
             }
             if(this.combatant2.hp <= 0)
             {
                 this.turnText = this.combatant1.getName() + " has won!";
-                break;
-            }
-        }
+                //break;
+            }*/
+        //}
     }
 }

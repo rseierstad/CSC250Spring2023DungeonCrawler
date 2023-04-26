@@ -1221,7 +1221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76bb64ebd447f624d946833b7300d702, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enableFights: 0
+  enableFights: 1
   chanceToGetIntoFight: 100
 --- !u!1001 &376327916
 PrefabInstance:

@@ -18,12 +18,17 @@ public class RefereeController : MonoBehaviour
     void Start()
     {
         this.theMonster = new Monster("Wizard");
+        this.turnText.text = "Fight!";
+        this.updateScore();  
+        this.theMatch = new DeathMatch(MasterControlProgram.p, this.theMonster, this.playerGO, this.monsterGO, this);
+        StartCoroutine(DelayBeforeFight());
+    }
+
+    public void updateScore()
+    {
         this.monsterSB.text = this.theMonster.getData();
         this.playerSB.text = MasterControlProgram.p.getData();
-        this.turnText.text = "Fight!";
-        this.theMatch = new DeathMatch(MasterControlProgram.p, this.theMonster, this.playerGO, this.monsterGO, this);
-        MasterControlProgram.playerShouldAttack = true;
-        StartCoroutine(DelayBeforeFight());
+        this.turnText.text = this.theMatch.turnText;
     }
 
     IEnumerator DelayBeforeFight()
@@ -35,29 +40,6 @@ public class RefereeController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        this.monsterSB.text = this.theMonster.getData();
-        this.playerSB.text = MasterControlProgram.p.getData();
-        this.turnText.text = this.theMatch.turnText;
-
-        if(MasterControlProgram.playerShouldAttack)
-        {
-            MasterControlProgram.playerShouldAttack = false;
-            this.currRigidBodyOfAttacker = this.playerGO.GetComponent<Rigidbody>();
-            this.attackerMoveDistance *= -1;
-            this.attackerOriginalPosition = this.playerGO.tranform.position;
-
-            //this tells our thread to start
-            StartCoroutine(this.theMatch.MoveObjectRoutine());
-        }
-
-        if(MasterControlProgram.monsterShouldAttack)
-        {
-            MasterControlProgram.monsterShouldAttack = false;
-            this.currRigidBodyOfAttacker = this.monsterGO.GetComponent<Rigidbody>();
-            this.attackerOriginalPosition = this.monsterGO.tranform.position;
-
-            //this tells our thread to start
-            StartCoroutine(this.theMatch.MoveObjectRoutine());
-        }
+        
     }
 }
