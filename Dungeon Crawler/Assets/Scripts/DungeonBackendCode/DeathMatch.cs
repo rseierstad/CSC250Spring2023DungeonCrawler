@@ -47,8 +47,8 @@ public class DeathMatch
 
         yield return new WaitForSeconds(1.5f);
 
-        //try to hit target here; Dice.roll(20) >= this.currentTarget.getAC()
-        if(true)
+        //try to hit target here
+        if(Dice.roll(20) >= this.currentTarget.getAC())
         {
             this.currentTarget.takeDamage(this.currentAttacker.getDamage());
             this.turnText = "Hit!";
@@ -90,9 +90,11 @@ public class DeathMatch
             {
                 this.currRigidBodyOfAttacker.AddForce(Vector3.up * 400.0f);
                 yield return new WaitForSeconds(0.3f);
-                this.currRigidBodyOfAttacker.AddForce(Vector3.down * 400.0f);
+                this.currRigidBodyOfAttacker.AddForce(Vector3.down * 600.0f);
                 yield return new WaitForSeconds(0.3f);
                 this.currRigidBodyOfAttacker.MovePosition(originalPosition);
+                this.currRigidBodyOfAttacker.velocity = Vector3.zero;
+                this.currRigidBodyOfAttacker.Sleep();
             }
         }
         else
