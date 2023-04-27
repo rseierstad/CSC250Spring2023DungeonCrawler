@@ -11,7 +11,7 @@ public class DeathMatch
     public string turnText = "Fight!";
     private Rigidbody currRigidBodyOfAttacker;
     private Vector3 attackerOriginalPosition;
-    private float attackMoveDistance = -1.5f;
+    private float attackMoveDistance = 1.5f;
     private Inhabitant currentAttacker;
     private GameObject currentAttackerGO;
     private Inhabitant currentTarget;
@@ -24,10 +24,10 @@ public class DeathMatch
         this.combatant2 = combatant2;
         this.combatant1GO = combatant1GO;
         this.combatant2GO = combatant2GO;
-        this.currentAttacker = this.combatant1;
-        this.currentAttackerGO = this.combatant1GO;
-        this.currentTarget = this.combatant2;
-        this.currentTargetGO = this.combatant2GO;
+        this.currentAttacker = this.combatant2;
+        this.currentAttackerGO = this.combatant2GO;
+        this.currentTarget = this.combatant1;
+        this.currentTargetGO = this.combatant1GO;
         this.refereeInstance = refereeInstance;
     }
 
@@ -46,8 +46,6 @@ public class DeathMatch
 
         yield return new WaitForSeconds(2.0f);
 
-        this.currRigidBodyOfAttacker.MovePosition(originalPosition);
-
         //try to hit target here
         if(Dice.roll(20) >= this.currentTarget.getAC())
         {
@@ -58,10 +56,12 @@ public class DeathMatch
         {
             this.turnText = "Miss!";
         }
-        
-        yield return new WaitForSeconds(1.0f);
 
         ((RefereeController)this.refereeInstance).updateScore();
+
+        this.currRigidBodyOfAttacker.MovePosition(originalPosition);
+        
+        yield return new WaitForSeconds(1.0f);
 
         if(this.currentTarget.isDead())
         {
@@ -83,9 +83,6 @@ public class DeathMatch
         
         //while(true)
         //{
-            this.attackerOriginalPosition = this.currentAttackerGO.transform.position;
-            this.currRigidBodyOfAttacker = this.currentAttackerGO.GetComponent<Rigidbody>();
-
             if(this.currentAttackerGO == this.combatant1GO)
             {
                 this.currentAttackerGO = this.combatant2GO;
@@ -100,6 +97,9 @@ public class DeathMatch
                 this.currentTarget = this.combatant2;
                 this.currentTargetGO = this.combatant2GO;
             }
+
+            this.attackerOriginalPosition = this.currentAttackerGO.transform.position;
+            this.currRigidBodyOfAttacker = this.currentAttackerGO.GetComponent<Rigidbody>();
 
             //non-blocking line of code
             this.refereeInstance.StartCoroutine(MoveObjectRoutine());

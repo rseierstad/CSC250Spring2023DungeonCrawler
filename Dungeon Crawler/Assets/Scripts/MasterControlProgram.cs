@@ -10,6 +10,7 @@ public class MasterControlProgram
     private static bool isDungeonSetup = false;
     public static Dungeon cs = null;
     public static Player p = null;
+    public static GameObject musicLooper = null;
 
     public static void setupDungeon()
     {

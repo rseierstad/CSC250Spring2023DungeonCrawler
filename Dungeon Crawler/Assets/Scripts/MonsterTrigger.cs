@@ -28,6 +28,9 @@ public class MonsterTrigger : MonoBehaviour
 
             if(chanceToFight <= this.chanceToGetIntoFight)
             {
+                Destroy(MasterControlProgram.musicLooper);
+                MasterControlProgram.musicLooper = null;
+
                 SceneManager.LoadScene("Fight Scene");
             }
             else
