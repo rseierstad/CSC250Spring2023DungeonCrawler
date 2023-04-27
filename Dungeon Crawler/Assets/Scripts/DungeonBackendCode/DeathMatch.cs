@@ -17,6 +17,7 @@ public class DeathMatch
     private Inhabitant currentTarget;
     private GameObject currentTargetGO;
     private MonoBehaviour refereeInstance;
+    private Animator animatorTarget;
 
     public DeathMatch(Inhabitant combatant1, Inhabitant combatant2, GameObject combatant1GO, GameObject combatant2GO, MonoBehaviour refereeInstance)
     {
@@ -44,10 +45,10 @@ public class DeathMatch
 
         this.currRigidBodyOfAttacker.MovePosition(targetPosition);
 
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(1.5f);
 
-        //try to hit target here
-        if(Dice.roll(20) >= this.currentTarget.getAC())
+        //try to hit target here; Dice.roll(20) >= this.currentTarget.getAC()
+        if(true)
         {
             this.currentTarget.takeDamage(this.currentAttacker.getDamage());
             this.turnText = "Hit!";
@@ -61,7 +62,7 @@ public class DeathMatch
 
         this.currRigidBodyOfAttacker.MovePosition(originalPosition);
         
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(0.5f);
 
         if(this.currentTarget.isDead())
         {
@@ -69,6 +70,30 @@ public class DeathMatch
             //1. Make the dead guy fall over (rotate)
             //2. Make the winner jump up and down (apply a force to a rigidbody)
             //3. Play Victory Music
+
+            MasterControlProgram.victory = true;
+
+
+            this.currentTargetGO.transform.position = this.currentTargetGO.transform.position + this.currentTargetGO.transform.forward * attackMoveDistance;
+            this.currentTargetGO.transform.position = this.currentTargetGO.transform.position + this.currentTargetGO.transform.up * 0.5f;
+
+            if(this.currentTarget == this.combatant1)
+            {
+                this.currentTargetGO.transform.eulerAngles = new Vector3(-90,-90,0);
+            }
+            if(this.currentTarget == this.combatant2)
+            {
+                this.currentTargetGO.transform.eulerAngles = new Vector3(-90,90,0);
+            }
+
+            for(int i = 0; i < 3; i++)
+            {
+                this.currRigidBodyOfAttacker.AddForce(Vector3.up * 400.0f);
+                yield return new WaitForSeconds(0.3f);
+                this.currRigidBodyOfAttacker.AddForce(Vector3.down * 400.0f);
+                yield return new WaitForSeconds(0.3f);
+                this.currRigidBodyOfAttacker.MovePosition(originalPosition);
+            }
         }
         else
         {

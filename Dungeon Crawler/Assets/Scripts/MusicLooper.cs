@@ -25,6 +25,9 @@ public class MusicLooper : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(MasterControlProgram.victory)
+        {
+            Destroy(this.gameObject);
+        }
     }
 }
