@@ -32,6 +32,22 @@ public class DeathMatch
         this.refereeInstance = refereeInstance;
     }
 
+    private IEnumerator JumpCoroutine()
+    {
+        float duration = 60f;   //1 minute
+        float speed = 5f;
+        float startTime = Time.time;
+        Vector3 startPosition = this.currentAttackerGO.transform.position;
+
+        while(Time.time - startTime < duration)
+        {
+            float newY = startPosition.y + Mathf.Sin((Time.time - startTime) * speed) * 0.5f;
+            this.currentAttackerGO.transform.position = new Vector3(this.currentAttackerGO.transform.position.x, newY, this.currentAttackerGO.transform.position.z);
+
+            yield return null;
+        }
+    }
+
     //this is basically a thread
     IEnumerator MoveObjectRoutine()
     {
@@ -71,9 +87,6 @@ public class DeathMatch
             //2. Make the winner jump up and down (apply a force to a rigidbody)
             //3. Play Victory Music
 
-            MasterControlProgram.victory = true;
-
-
             this.currentTargetGO.transform.position = this.currentTargetGO.transform.position + this.currentTargetGO.transform.forward * attackMoveDistance;
             this.currentTargetGO.transform.position = this.currentTargetGO.transform.position + this.currentTargetGO.transform.up * 0.5f;
 
@@ -86,7 +99,19 @@ public class DeathMatch
                 this.currentTargetGO.transform.eulerAngles = new Vector3(-90,90,0);
             }
 
-            for(int i = 0; i < 3; i++)
+            this.refereeInstance.StartCoroutine(JumpCoroutine());
+
+            if(this.currentAttackerGO == this.combatant1GO)
+            {
+                ((RefereeController)this.refereeInstance).playVictoryMusic();
+            }
+            else
+            {
+                //play sad music;
+            }
+
+            //alternative way for winner to jump
+            /*for(int i = 0; i < 3; i++)
             {
                 this.currRigidBodyOfAttacker.AddForce(Vector3.up * 400.0f);
                 yield return new WaitForSeconds(0.3f);
@@ -95,7 +120,7 @@ public class DeathMatch
                 this.currRigidBodyOfAttacker.MovePosition(originalPosition);
                 this.currRigidBodyOfAttacker.velocity = Vector3.zero;
                 this.currRigidBodyOfAttacker.Sleep();
-            }
+            }*/
         }
         else
         {
@@ -130,47 +155,6 @@ public class DeathMatch
 
             //non-blocking line of code
             this.refereeInstance.StartCoroutine(MoveObjectRoutine());
-
-            /*if(this.combatant1.hp > 0 && this.combatant2.hp > 0)
-            {
-                this.turnText = this.combatant1.getName() + "'s Turn";
-                this.roll = r.Next(1, 21);
-                if(this.roll >= this.com2ac)
-                {
-                    this.turnText = "Hit!";
-                    this.combatant2.hp = this.combatant2.hp - this.com1damage;
-                }
-                else if(this.roll < this.com2ac)
-                {
-                    this.turnText = "Miss!";
-                }
-
-                if(this.combatant1.hp > 0 && this.combatant2.hp > 0)
-                {
-                    this.turnText = this.combatant2.getName() + "'s Turn";
-                    this.roll = r.Next(1, 21);
-                    if(this.roll >= this.com1ac)
-                    {
-                        this.turnText = "Hit!";
-                        this.combatant1.hp = this.combatant1.hp - this.com2damage;
-                    }
-                    else if(this.roll < this.com1ac)
-                    {
-                        this.turnText = "Miss!";
-                    }
-                }
-            }
-            if(this.combatant1.hp <= 0)
-            {
-                this.turnText = this.combatant2.getName() + " has won!";
-                //break;
-            }
-            if(this.combatant2.hp <= 0)
-            {
-                this.turnText = this.combatant1.getName() + " has won!";
-                //break;
-            }*/
-        //}
     }
 
     public string getTurnText()

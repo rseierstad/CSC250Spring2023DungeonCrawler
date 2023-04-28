@@ -410,7 +410,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 15.538555, w: -2.9009736}
+  m_margin: {x: 0, y: 0, z: 15.246552, w: -2.9009736}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   _SortingLayer: 0
@@ -798,7 +798,7 @@ GameObject:
   - component: {fileID: 350369228}
   - component: {fileID: 350369230}
   m_Layer: 0
-  m_Name: Jukebox
+  m_Name: Fighitng Jukebox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2014,7 +2014,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1226091607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2038,7 +2038,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: dcee12240b5a9d644b433b778791e834, type: 3}
-  m_PlayOnAwake: 0
+  m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
   Loop: 1
@@ -3120,6 +3120,8 @@ MonoBehaviour:
   monsterSB: {fileID: 1363801916}
   playerSB: {fileID: 161554854}
   turnText: {fileID: 1773765058}
+  fightJukebox: {fileID: 350369227}
+  victoryJukebox: {fileID: 1226091606}
 --- !u!4 &1770548540
 Transform:
   m_ObjectHideFlags: 0

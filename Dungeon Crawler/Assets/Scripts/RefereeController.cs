@@ -12,6 +12,8 @@ public class RefereeController : MonoBehaviour
     private Monster theMonster;
     private DeathMatch theMatch;
     public TextMeshPro turnText;
+    public GameObject fightJukebox;
+    public GameObject victoryJukebox;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +23,12 @@ public class RefereeController : MonoBehaviour
         this.theMatch = new DeathMatch(MasterControlProgram.p, this.theMonster, this.playerGO, this.monsterGO, this);
         this.updateScore();
         StartCoroutine(DelayBeforeFight());
+    }
+
+    public void playVictoryMusic()
+    {
+        this.fightJukebox.SetActive(false);
+        this.victoryJukebox.SetActive(true);
     }
 
     public void updateScore()
