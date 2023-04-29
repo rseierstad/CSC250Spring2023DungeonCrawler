@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     private bool isMoving;
     private Room currentRoom;
     public GameObject playerCostume;
+    public GameObject westMonsterTrigger, eastMonsterTrigger, southMonsterTrigger, northMonsterTrigger;
 
     // Start is called before the first frame update
     void Start()
@@ -27,7 +28,6 @@ public class PlayerController : MonoBehaviour
                 this.gameObject.transform.position = this.southStart.transform.position;
                 this.playerCostume.transform.LookAt(this.northExit.transform);
                 this.rb.AddForce(Vector3.forward * 200.0f);
-                
             }
             else if(MasterControlProgram.whereDidIComeFrom.Equals("south"))
             {
@@ -49,6 +49,34 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        if(!MasterControlProgram.victoryContinue.Equals("?"))
+        {
+            if(MasterControlProgram.victoryContinue.Equals("north"))
+            {
+                this.gameObject.transform.position = this.northMonsterTrigger.transform.position;
+                this.playerCostume.transform.LookAt(this.northExit.transform);
+                this.rb.AddForce(Vector3.forward * 200.0f);             
+            }
+            else if(MasterControlProgram.victoryContinue.Equals("south"))
+            {
+                this.gameObject.transform.position = this.southMonsterTrigger.transform.position;
+                this.playerCostume.transform.LookAt(this.southExit.transform);
+                this.rb.AddForce(Vector3.back * 200.0f);
+            }
+            else if(MasterControlProgram.victoryContinue.Equals("east"))
+            {
+                this.gameObject.transform.position = this.eastMonsterTrigger.transform.position;
+                this.playerCostume.transform.LookAt(this.eastExit.transform);
+                this.rb.AddForce(Vector3.right * 200.0f);
+            }
+            else if(MasterControlProgram.victoryContinue.Equals("west"))
+            {
+                this.gameObject.transform.position = this.westMonsterTrigger.transform.position;
+                this.playerCostume.transform.LookAt(this.westExit.transform);
+                this.rb.AddForce(Vector3.left * 200.0f);
+            }
+        }
+
         currentRoom = MasterControlProgram.p.getCurrentRoom();
     }
 
@@ -62,6 +90,7 @@ public class PlayerController : MonoBehaviour
                 this.playerCostume.transform.LookAt(this.northExit.transform);    
                 this.rb.AddForce(Vector3.forward * 200.0f);
                 this.isMoving = true;
+                MasterControlProgram.victoryContinue = "north";
             }
         }
         if(Input.GetKeyDown(KeyCode.DownArrow) && this.isMoving == false)
@@ -71,6 +100,7 @@ public class PlayerController : MonoBehaviour
                 this.playerCostume.transform.LookAt(this.southExit.transform);
                 this.rb.AddForce(Vector3.back * 200.0f);
                 this.isMoving = true;
+                MasterControlProgram.victoryContinue = "south";
             }
         }
         if(Input.GetKeyDown(KeyCode.RightArrow) && this.isMoving == false)
@@ -80,6 +110,7 @@ public class PlayerController : MonoBehaviour
                 this.playerCostume.transform.LookAt(this.eastExit.transform);
                 this.rb.AddForce(Vector3.right * 200.0f);
                 this.isMoving = true;
+                MasterControlProgram.victoryContinue = "east";
             }
         }
         if(Input.GetKeyDown(KeyCode.LeftArrow) && this.isMoving == false)
@@ -89,6 +120,7 @@ public class PlayerController : MonoBehaviour
                 this.playerCostume.transform.LookAt(this.westExit.transform);
                 this.rb.AddForce(Vector3.left * 200.0f);
                 this.isMoving = true;
+                MasterControlProgram.victoryContinue = "west";
             }
         }
     }
@@ -99,6 +131,8 @@ public class PlayerController : MonoBehaviour
         {
             this.rb.velocity = Vector3.zero;
             this.rb.Sleep();
+
+            MasterControlProgram.whereDidIComeFrom = "?";
         }
     }
 
@@ -109,21 +143,25 @@ public class PlayerController : MonoBehaviour
             if(other.gameObject == this.northExit)
             {
                 MasterControlProgram.whereDidIComeFrom = "north";
+                MasterControlProgram.victoryContinue = "?";
                 currentRoom.takeExit(MasterControlProgram.p, "north");
             }
             else if(other.gameObject == this.southExit)
             {
                 MasterControlProgram.whereDidIComeFrom = "south";
+                MasterControlProgram.victoryContinue = "?";
                 currentRoom.takeExit(MasterControlProgram.p, "south");
             }
             else if(other.gameObject == this.eastExit)
             {
                 MasterControlProgram.whereDidIComeFrom = "east";
+                MasterControlProgram.victoryContinue = "?";
                 currentRoom.takeExit(MasterControlProgram.p, "east");
             }
             else if(other.gameObject == this.westExit)
             {
                 MasterControlProgram.whereDidIComeFrom = "west";
+                MasterControlProgram.victoryContinue = "?";
                 currentRoom.takeExit(MasterControlProgram.p, "west");
             }
             MasterControlProgram.isExiting = false;

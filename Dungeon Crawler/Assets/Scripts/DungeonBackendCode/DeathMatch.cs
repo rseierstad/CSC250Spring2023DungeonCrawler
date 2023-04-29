@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DeathMatch
 {
@@ -82,11 +83,6 @@ public class DeathMatch
 
         if(this.currentTarget.isDead())
         {
-            //what happens when our fight is over?
-            //1. Make the dead guy fall over (rotate)
-            //2. Make the winner jump up and down (apply a force to a rigidbody)
-            //3. Play Victory Music
-
             this.currentTargetGO.transform.position = this.currentTargetGO.transform.position + this.currentTargetGO.transform.forward * attackMoveDistance;
             this.currentTargetGO.transform.position = this.currentTargetGO.transform.position + this.currentTargetGO.transform.up * 0.5f;
 
@@ -104,23 +100,18 @@ public class DeathMatch
             if(this.currentAttackerGO == this.combatant1GO)
             {
                 ((RefereeController)this.refereeInstance).playVictoryMusic();
+                yield return new WaitForSeconds(5.0f);
+                MasterControlProgram.victory = true;
+                SceneManager.LoadScene("Dungeon Room");
+
             }
             else
             {
                 //play sad music;
+                yield return new WaitForSeconds(1.5f);
+                ((RefereeController)this.refereeInstance).defeatMusic();
+                SceneManager.LoadScene("Game Over");
             }
-
-            //alternative way for winner to jump
-            /*for(int i = 0; i < 3; i++)
-            {
-                this.currRigidBodyOfAttacker.AddForce(Vector3.up * 400.0f);
-                yield return new WaitForSeconds(0.3f);
-                this.currRigidBodyOfAttacker.AddForce(Vector3.down * 600.0f);
-                yield return new WaitForSeconds(0.3f);
-                this.currRigidBodyOfAttacker.MovePosition(originalPosition);
-                this.currRigidBodyOfAttacker.velocity = Vector3.zero;
-                this.currRigidBodyOfAttacker.Sleep();
-            }*/
         }
         else
         {

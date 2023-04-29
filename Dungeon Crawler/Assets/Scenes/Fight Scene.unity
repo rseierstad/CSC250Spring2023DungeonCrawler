@@ -2007,7 +2007,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1226091609}
   - component: {fileID: 1226091608}
-  - component: {fileID: 1226091607}
   m_Layer: 0
   m_Name: VictoryJukebox
   m_TagString: Untagged
@@ -2015,18 +2014,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &1226091607
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1226091606}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db78025752d0ac145ac11cf95dc31d5e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!82 &1226091608
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2555,7 +2542,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.4, y: 2}
+  m_AnchoredPosition: {x: -0.52, y: 2}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1391884411
@@ -3122,6 +3109,7 @@ MonoBehaviour:
   turnText: {fileID: 1773765058}
   fightJukebox: {fileID: 350369227}
   victoryJukebox: {fileID: 1226091606}
+  defeatJukebox: {fileID: 0}
 --- !u!4 &1770548540
 Transform:
   m_ObjectHideFlags: 0

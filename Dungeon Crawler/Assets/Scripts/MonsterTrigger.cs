@@ -11,16 +11,26 @@ public class MonsterTrigger : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        if(!MasterControlProgram.whereDidIComeFrom.Equals("?"))
+        {
+            this.enableFights = false;
+        }
+        if(!MasterControlProgram.victoryContinue.Equals("?"))
+        {
+            this.enableFights = false;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(MasterControlProgram.whereDidIComeFrom.Equals("?"))
+        {
+            this.enableFights = true;
+        }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if(this.enableFights)
         {

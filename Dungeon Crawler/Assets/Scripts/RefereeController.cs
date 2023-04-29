@@ -14,6 +14,7 @@ public class RefereeController : MonoBehaviour
     public TextMeshPro turnText;
     public GameObject fightJukebox;
     public GameObject victoryJukebox;
+    public GameObject defeatJukebox;
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +30,11 @@ public class RefereeController : MonoBehaviour
     {
         this.fightJukebox.SetActive(false);
         this.victoryJukebox.SetActive(true);
+    }
+
+    public void defeatMusic()
+    {
+        this.fightJukebox.SetActive(false);
     }
 
     public void updateScore()
