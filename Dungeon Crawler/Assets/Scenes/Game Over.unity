@@ -317,7 +317,7 @@ GameObject:
   - component: {fileID: 1538025466}
   - component: {fileID: 1538025465}
   m_Layer: 0
-  m_Name: Turn Board
+  m_Name: Game Over
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

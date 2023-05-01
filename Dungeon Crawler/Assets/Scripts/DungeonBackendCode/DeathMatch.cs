@@ -64,8 +64,8 @@ public class DeathMatch
 
         yield return new WaitForSeconds(1.5f);
 
-        //try to hit target here
-        if(Dice.roll(20) >= this.currentTarget.getAC())
+        //try to hit target here; Dice.roll(20) >= this.currentTarget.getAC()
+        if(true)
         {
             this.currentTarget.takeDamage(this.currentAttacker.getDamage());
             this.turnText = "Hit!";
@@ -99,18 +99,13 @@ public class DeathMatch
 
             if(this.currentAttackerGO == this.combatant1GO)
             {
-                ((RefereeController)this.refereeInstance).playVictoryMusic();
-                yield return new WaitForSeconds(5.0f);
                 MasterControlProgram.victory = true;
-                SceneManager.LoadScene("Dungeon Room");
-
+                ((RefereeController)this.refereeInstance).PlayVictoryMusic();
             }
             else
             {
                 //play sad music;
-                yield return new WaitForSeconds(1.5f);
-                ((RefereeController)this.refereeInstance).defeatMusic();
-                SceneManager.LoadScene("Game Over");
+                ((RefereeController)this.refereeInstance).PlayDefeatMusic();
             }
         }
         else

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class RefereeController : MonoBehaviour
 {
@@ -26,15 +27,30 @@ public class RefereeController : MonoBehaviour
         StartCoroutine(DelayBeforeFight());
     }
 
-    public void playVictoryMusic()
+    public void PlayVictoryMusic()
     {
         this.fightJukebox.SetActive(false);
         this.victoryJukebox.SetActive(true);
+        StartCoroutine(ShowDungeonScene());
     }
 
-    public void defeatMusic()
+    IEnumerator ShowGameOverScene()
+    {
+        yield return new WaitForSeconds(3.0f);
+        SceneManager.LoadScene("Game Over");
+    }
+
+    IEnumerator ShowDungeonScene()
+    {
+        yield return new WaitForSeconds(3.0f);
+        SceneManager.LoadScene("Dungeon Room");
+    }
+
+    public void PlayDefeatMusic()
     {
         this.fightJukebox.SetActive(false);
+        this.defeatJukebox.SetActive(true);
+        StartCoroutine(ShowGameOverScene());
     }
 
     public void updateScore()
