@@ -47,37 +47,38 @@ public class PlayerController : MonoBehaviour
                 this.playerCostume.transform.LookAt(this.westExit.transform);
                 this.rb.AddForce(Vector3.left * 200.0f);
             }
+            StartCoroutine(PlayerHeal());
         }
 
         if(!MasterControlProgram.victoryContinue.Equals("?"))
         {
             if(MasterControlProgram.victoryContinue.Equals("north"))
             {
-                this.gameObject.transform.position = this.northMonsterTrigger.transform.position;
+                this.gameObject.transform.position = new Vector3(this.northMonsterTrigger.transform.position.x, 0, this.northMonsterTrigger.transform.position.z);
                 this.playerCostume.transform.LookAt(this.northExit.transform);
                 this.rb.AddForce(Vector3.forward * 200.0f);             
             }
             else if(MasterControlProgram.victoryContinue.Equals("south"))
             {
-                this.gameObject.transform.position = this.southMonsterTrigger.transform.position;
+                this.gameObject.transform.position = new Vector3(this.southMonsterTrigger.transform.position.x, 0, this.southMonsterTrigger.transform.position.z);
                 this.playerCostume.transform.LookAt(this.southExit.transform);
                 this.rb.AddForce(Vector3.back * 200.0f);
             }
             else if(MasterControlProgram.victoryContinue.Equals("east"))
             {
-                this.gameObject.transform.position = this.eastMonsterTrigger.transform.position;
+                this.gameObject.transform.position = new Vector3(this.eastMonsterTrigger.transform.position.x, 0, this.eastMonsterTrigger.transform.position.z);
                 this.playerCostume.transform.LookAt(this.eastExit.transform);
                 this.rb.AddForce(Vector3.right * 200.0f);
             }
             else if(MasterControlProgram.victoryContinue.Equals("west"))
             {
-                this.gameObject.transform.position = this.westMonsterTrigger.transform.position;
+                this.gameObject.transform.position = new Vector3(this.westMonsterTrigger.transform.position.x, 0, this.westMonsterTrigger.transform.position.z);
                 this.playerCostume.transform.LookAt(this.westExit.transform);
                 this.rb.AddForce(Vector3.left * 200.0f);
             }
         }
 
-        currentRoom = MasterControlProgram.p.getCurrentRoom();
+        currentRoom = MasterControlProgram.thePlayer.getCurrentRoom();
     }
 
     // Update is called once per frame
@@ -144,25 +145,25 @@ public class PlayerController : MonoBehaviour
             {
                 MasterControlProgram.whereDidIComeFrom = "north";
                 MasterControlProgram.victoryContinue = "?";
-                currentRoom.takeExit(MasterControlProgram.p, "north");
+                currentRoom.takeExit(MasterControlProgram.thePlayer, "north");
             }
             else if(other.gameObject == this.southExit)
             {
                 MasterControlProgram.whereDidIComeFrom = "south";
                 MasterControlProgram.victoryContinue = "?";
-                currentRoom.takeExit(MasterControlProgram.p, "south");
+                currentRoom.takeExit(MasterControlProgram.thePlayer, "south");
             }
             else if(other.gameObject == this.eastExit)
             {
                 MasterControlProgram.whereDidIComeFrom = "east";
                 MasterControlProgram.victoryContinue = "?";
-                currentRoom.takeExit(MasterControlProgram.p, "east");
+                currentRoom.takeExit(MasterControlProgram.thePlayer, "east");
             }
             else if(other.gameObject == this.westExit)
             {
                 MasterControlProgram.whereDidIComeFrom = "west";
                 MasterControlProgram.victoryContinue = "?";
-                currentRoom.takeExit(MasterControlProgram.p, "west");
+                currentRoom.takeExit(MasterControlProgram.thePlayer, "west");
             }
             MasterControlProgram.isExiting = false;
             SceneManager.LoadScene("Dungeon Room");
@@ -172,5 +173,12 @@ public class PlayerController : MonoBehaviour
         {
             MasterControlProgram.isExiting = true;
         }
+    }
+
+    IEnumerator PlayerHeal()
+    {
+        yield return new WaitForSeconds(3.0f);
+        MasterControlProgram.thePlayer.healHP(1);
+        StartCoroutine(PlayerHeal());
     }
 }

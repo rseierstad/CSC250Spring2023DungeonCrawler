@@ -22,7 +22,7 @@ public class RefereeController : MonoBehaviour
     {
         this.theMonster = new Monster("Wizard");
         this.turnText.text = "Fight!";
-        this.theMatch = new DeathMatch(MasterControlProgram.p, this.theMonster, this.playerGO, this.monsterGO, this);
+        this.theMatch = new DeathMatch(MasterControlProgram.thePlayer, this.theMonster, this.playerGO, this.monsterGO, this);
         this.updateScore();
         StartCoroutine(DelayBeforeFight());
     }
@@ -56,7 +56,7 @@ public class RefereeController : MonoBehaviour
     public void updateScore()
     {
         this.monsterSB.text = this.theMonster.getData();
-        this.playerSB.text = MasterControlProgram.p.getData();
+        this.playerSB.text = MasterControlProgram.thePlayer.getData();
         this.turnText.text = this.theMatch.getTurnText();
     }
 

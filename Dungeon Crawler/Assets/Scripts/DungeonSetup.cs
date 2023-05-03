@@ -23,7 +23,7 @@ public class DungeonSetup : MonoBehaviour
 
     void setExits()
     {
-        currentRoom = MasterControlProgram.p.getCurrentRoom();
+        currentRoom = MasterControlProgram.thePlayer.getCurrentRoom();
         if(!currentRoom.hasExit("north"))
         {
             this.northExit.SetActive(false);

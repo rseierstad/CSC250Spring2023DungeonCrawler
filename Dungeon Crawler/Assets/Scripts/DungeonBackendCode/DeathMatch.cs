@@ -64,8 +64,8 @@ public class DeathMatch
 
         yield return new WaitForSeconds(1.5f);
 
-        //try to hit target here; Dice.roll(20) >= this.currentTarget.getAC()
-        if(true)
+        //try to hit target here
+        if(Dice.roll(20) >= this.currentTarget.getAC())
         {
             this.currentTarget.takeDamage(this.currentAttacker.getDamage());
             this.turnText = "Hit!";

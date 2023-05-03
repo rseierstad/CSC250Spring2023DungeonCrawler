@@ -9,7 +9,7 @@ public class MasterControlProgram
     public static bool isExiting = true;
     private static bool isDungeonSetup = false;
     public static Dungeon cs = null;
-    public static Player p = null;
+    public static Player thePlayer = null;
     public static GameObject musicLooper = null;
     public static string victoryContinue = "?";
     public static bool victory = false;
@@ -22,8 +22,8 @@ public class MasterControlProgram
             MasterControlProgram.cs = new Dungeon(100);
 		    MasterControlProgram.cs.populateCSDepartment();
 		    
-		    MasterControlProgram.p = new Player("Rachel");
-		    MasterControlProgram.cs.addPlayer(p);
+		    MasterControlProgram.thePlayer = new Player("Rachel");
+		    MasterControlProgram.cs.addPlayer(thePlayer);
     
             MasterControlProgram.isDungeonSetup = true;
         }
