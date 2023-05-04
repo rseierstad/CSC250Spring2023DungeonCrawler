@@ -40,6 +40,16 @@ public class Inhabitant
         return this.name;
     }
 
+    public int getHP()
+    {
+        return this.hp;
+    }
+
+    public int getMaxHP()
+    {
+        return this.maxHP;
+    }
+
     public void takeDamage(int damage)
     {
         this.hp = this.hp - damage;

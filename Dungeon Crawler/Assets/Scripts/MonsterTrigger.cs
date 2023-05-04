@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MonsterTrigger : MonoBehaviour
 {
-    public bool enableFights = true;
+    public bool enableFights;
     public double chanceToGetIntoFight = 30;
 
     // Start is called before the first frame update

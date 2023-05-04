@@ -8,7 +8,6 @@ public class PlayerController : MonoBehaviour
 {
     private Rigidbody rb;
     public GameObject northExit, southExit, eastExit, westExit;
-    public GameObject westStart, eastStart, northStart, southStart;
     public GameObject resetButton;
     private bool isMoving;
     private Room currentRoom;
@@ -25,25 +24,25 @@ public class PlayerController : MonoBehaviour
         {
             if(MasterControlProgram.whereDidIComeFrom.Equals("north"))
             {
-                this.gameObject.transform.position = this.southStart.transform.position;
+                this.gameObject.transform.position = this.southExit.transform.position;
                 this.playerCostume.transform.LookAt(this.northExit.transform);
                 this.rb.AddForce(Vector3.forward * 200.0f);
             }
             else if(MasterControlProgram.whereDidIComeFrom.Equals("south"))
             {
-                this.gameObject.transform.position = this.northStart.transform.position;
+                this.gameObject.transform.position = this.northExit.transform.position;
                 this.playerCostume.transform.LookAt(this.southExit.transform);
                 this.rb.AddForce(Vector3.back * 200.0f);
             }
             else if(MasterControlProgram.whereDidIComeFrom.Equals("east"))
             {
-                this.gameObject.transform.position = this.westStart.transform.position;
+                this.gameObject.transform.position = this.westExit.transform.position;
                 this.playerCostume.transform.LookAt(this.eastExit.transform);
                 this.rb.AddForce(Vector3.right * 200.0f);
             }
             else if(MasterControlProgram.whereDidIComeFrom.Equals("west"))
             {
-                this.gameObject.transform.position = this.eastStart.transform.position;
+                this.gameObject.transform.position = this.eastExit.transform.position;
                 this.playerCostume.transform.LookAt(this.westExit.transform);
                 this.rb.AddForce(Vector3.left * 200.0f);
             }
@@ -77,13 +76,13 @@ public class PlayerController : MonoBehaviour
                 this.rb.AddForce(Vector3.left * 200.0f);
             }
         }
-
-        currentRoom = MasterControlProgram.thePlayer.getCurrentRoom();
     }
 
     // Update is called once per frame
     void Update()
     {
+        this.currentRoom = MasterControlProgram.thePlayer.getCurrentRoom();
+
         if(Input.GetKeyDown(KeyCode.UpArrow) && this.isMoving == false)
         {
             if(currentRoom.hasExit("north"))
