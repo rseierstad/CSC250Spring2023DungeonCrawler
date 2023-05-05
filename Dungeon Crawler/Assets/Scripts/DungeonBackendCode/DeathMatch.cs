@@ -66,10 +66,10 @@ public class DeathMatch
             MasterControlProgram.attack = true;
         }
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.0f);
 
-        //try to hit target here; Dice.roll(20) >= this.currentTarget.getAC()
-        if(true)
+        //try to hit target here;
+        if(Dice.roll(20) >= this.currentTarget.getAC())
         {
             this.currentTarget.takeDamage(this.currentAttacker.getDamage());
             this.turnText = "Hit!";
@@ -102,12 +102,11 @@ public class DeathMatch
             {
                 this.currentTargetGO.transform.eulerAngles = new Vector3(-90,90,0);
             }
-
+            
             this.refereeInstance.StartCoroutine(JumpCoroutine());
 
             if(this.currentAttackerGO == this.combatant1GO)
             {
-                MasterControlProgram.victory = true;
                 ((RefereeController)this.refereeInstance).PlayVictoryMusic();
             }
             else
