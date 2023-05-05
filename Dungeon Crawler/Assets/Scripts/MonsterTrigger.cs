@@ -34,6 +34,7 @@ public class MonsterTrigger : MonoBehaviour
     {
         if(this.enableFights)
         {
+            MasterControlProgram.run = true;
             int chanceToFight = Random.Range(1,100);
 
             if(chanceToFight <= this.chanceToGetIntoFight)

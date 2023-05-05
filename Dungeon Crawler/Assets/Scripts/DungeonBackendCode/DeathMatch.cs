@@ -18,7 +18,6 @@ public class DeathMatch
     private Inhabitant currentTarget;
     private GameObject currentTargetGO;
     private MonoBehaviour refereeInstance;
-    private Animator animatorTarget;
 
     public DeathMatch(Inhabitant combatant1, Inhabitant combatant2, GameObject combatant1GO, GameObject combatant2GO, MonoBehaviour refereeInstance)
     {
@@ -62,13 +61,22 @@ public class DeathMatch
 
         this.currRigidBodyOfAttacker.MovePosition(targetPosition);
 
+        if(this.currentAttacker == this.combatant1)
+        {
+            MasterControlProgram.attack = true;
+        }
+
         yield return new WaitForSeconds(1.5f);
 
-        //try to hit target here
-        if(Dice.roll(20) >= this.currentTarget.getAC())
+        //try to hit target here; Dice.roll(20) >= this.currentTarget.getAC()
+        if(true)
         {
             this.currentTarget.takeDamage(this.currentAttacker.getDamage());
             this.turnText = "Hit!";
+            if(this.currentTarget == this.combatant1)
+            {
+                MasterControlProgram.receiveDamage = true;
+            }
         }
         else
         {
@@ -88,7 +96,7 @@ public class DeathMatch
 
             if(this.currentTarget == this.combatant1)
             {
-                this.currentTargetGO.transform.eulerAngles = new Vector3(-90,-90,0);
+                MasterControlProgram.death = true;
             }
             if(this.currentTarget == this.combatant2)
             {
